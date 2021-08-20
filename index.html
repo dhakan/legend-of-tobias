@@ -32,6 +32,7 @@
       loadSound("ey1", "/assets/ey1.mp3");
       loadSound("ey2", "/assets/ey2.mp3");
       loadSound("ey3", "/assets/ey3.mp3");
+      loadSound("kom-igen-da", "/assets/kom-igen-da.mp3");
 
       loadSprite("bg", "/assets/background.jpeg");
       loadSprite("balck", "/assets/balck.png");
@@ -67,6 +68,7 @@
         const JUMP_FORCE = 600;
         const PLATFORM_FRAME = 0;
         const PROJECTILE_SPEED = 300;
+        const KEY_FRAME = 50;
 
         let platformSpeed = 100;
         let playerScore = 0;
@@ -153,24 +155,30 @@
           }
         }
 
-        // loop(1, () => {
-        //   playerScore += 1;
-        //   scoreLabel.text = playerScore;
-        //   platformSpeed += 10;
-        // });
-
         // Spawn initial platform to land on
         spawnPlatform(0, height() - PLATFORM_HEIGHT, 100);
 
         loop(5, () => {
-          // const y = rand(PLATFORM_MARGIN, height() - PLATFORM_HEIGHT);
-
           spawnPlatform(0, height() - PLATFORM_HEIGHT, 100);
-          //   spawnPlatform(
-          //     width() + PLATFORM_WIDTH / 2,
-          //     height() / 2 + 40,
-          //     randWidth
-          //   );
+        });
+
+        loop(5, () => {
+          add([
+            sprite("tiles", {
+              frame: KEY_FRAME,
+            }),
+            pos(width() / 2 + 100, height() / 2),
+            body(),
+            scale(0.2),
+            "key",
+          ]);
+        });
+
+        player.collides("key", (key) => {
+          destroy(key);
+          playerScore += 10;
+          scoreLabel.text = playerScore;
+          play("kom-igen-da");
         });
 
         keyPress("space", () => {
