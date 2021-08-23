@@ -1,3 +1,6 @@
+import musicPlayer from "./musicPlayer.js";
+
+import Title from "./scenes/Title.js";
 import Game from "./scenes/Game.js";
 import GameOver from "./scenes/GameOver.js";
 
@@ -9,11 +12,30 @@ loadSound("kom-igen-da", "/assets/sounds/kom-igen-da.mp3");
 loadSound("track", "/assets/sounds/track.mp3");
 loadSound("hurt", "/assets/sounds/hurt.mp3");
 loadSound("damage", "/assets/sounds/damage.mp3");
+loadSound("death", "/assets/sounds/death.mp3");
+loadSound("collected", "/assets/sounds/collected.mp3");
+
+// Songs
+loadSound("theme_title", "/assets/songs/theme_title.mp3");
+loadSound("theme_level_1", "/assets/songs/theme_level_1.mp3");
+loadSound("theme_level_2", "/assets/songs/theme_level_2.mp3");
 
 // Images
-loadSprite("bg", "/assets/imgs/background.jpeg");
+loadSprite("level_1", "/assets/imgs/level_1.jpeg");
+loadSprite("level_2", "/assets/imgs/level_2.jpg");
 loadSprite("balck", "/assets/imgs/balck.png");
-loadSprite("tobias", "/assets/imgs/tobias3.png", {
+loadSprite("eybro", "/assets/imgs/eybro.png");
+loadSprite("boss", "/assets/imgs/boss.png", {
+  sliceX: 10,
+  sliceY: 4,
+  anims: {
+    idle: {
+      from: 0,
+      to: 7,
+    },
+  },
+});
+loadSprite("tobias", "/assets/imgs/tobias.png", {
   sliceX: 3,
   sliceY: 2,
   anims: {
@@ -44,12 +66,19 @@ loadSprite("goomba", "/assets/imgs/goomba.png", {
     walk: {
       from: 0,
       to: 1,
-    }
+    },
   },
 });
 
 layers(["game", "ui"], "game");
 
 // Scenes
+scene("title", Title);
 scene("game", Game);
 scene("gameover", GameOver);
+
+// Why doesn't this work for all scenes?
+// Answer: Because all keypresses are bound to a scene
+keyPress("m", () => {
+  musicPlayer.toggleMute();
+});

@@ -4,5 +4,6 @@ export default kaboom({
   debug: true,
   width: 500,
   height: 300,
+  crisp: true,
   clearColor: [0, 0, 0, 1],
 });

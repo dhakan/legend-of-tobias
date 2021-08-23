@@ -1,3 +1,5 @@
+import musicPlayer from "../musicPlayer.js";
+
 const PLAYER_SPEED = 200;
 const JUMP_FORCE = 600;
 
@@ -9,6 +11,7 @@ export default function () {
     pos(width() / 2, height() / 2),
     origin("bot"),
     body(),
+    "player",
     { health: 100, score: 0 },
   ]);
 
@@ -27,6 +30,7 @@ export default function () {
 
     if (player.health <= 0) {
       go("gameover", player.score);
+      play("death");
     }
   });
 
