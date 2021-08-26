@@ -87,6 +87,7 @@ export default function () {
       return;
     }
 
+    // TODO is this check needed?
     if (boss.sequence !== SEQUENCE_JUMP) {
       return;
     }
