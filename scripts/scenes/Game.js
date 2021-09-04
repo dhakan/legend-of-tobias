@@ -6,7 +6,8 @@ import Spike from "../entities/Spike.js";
 import BasePlatform from "../entities/BasePlatform.js";
 import Enemy from "../entities/Enemy.js";
 import Health from "../entities/Health.js";
-import Boss from "../entities/Boss.js";
+// import Boss from "../entities/Boss.js";
+import createBoss from "../entities/createBoss.js";
 
 export default function () {
   const LEVEL_SPEED = 100;
@@ -82,8 +83,8 @@ export default function () {
   BasePlatform();
 
   wait(3, () => {
-    Boss();
-  })
+    createBoss(player, 300);
+  });
 
   // loop(3, () => {
   //   Key();
