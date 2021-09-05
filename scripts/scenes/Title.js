@@ -7,6 +7,7 @@ export default function () {
     pos(width() / 2, 170),
     origin("center"),
   ]);
+  
   musicPlayer.playSong("theme_title");
 
   keyPress("space", () => {

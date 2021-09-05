@@ -1,67 +1,72 @@
-class MusicPlayer {
-  constructor() {
-    this.song = null;
-    this.muted = false;
-  }
+function createMusicPlayer() {
+  let song = null;
+  let muted = null;
 
-  playSong(name, loop = true) {
-    if (this.song) {
-      this.song.stop();
+  function playSong(name, loop = true) {
+    return;
+
+    if (song) {
+      song.stop();
     }
 
-    this.song = play(name);
+    song = play(name);
 
     if (!loop) {
       return;
     }
 
-    this.song.loop();
+    song.loop();
 
-    if (this.muted) {
-      this.mute();
+    if (muted) {
+      mute();
     }
-
-    // Temporary to not get tired of hearing it all the time
-    // this.mute();
   }
 
-  stopSong() {
-    if (!this.song) {
+  function stopSong() {
+    if (!song) {
       return;
     }
 
-    this.song.stop();
+    song.stop();
   }
 
-  mute() {
-    if (!this.song) {
+  function mute() {
+    if (!song) {
       return;
     }
 
-    this.song.volume(0);
+    song.volume(0);
   }
-  
-  unmute() {
-    if (!this.song) {
+
+  function unmute() {
+    if (!song) {
       return;
     }
 
-    this.song.volume(1);
+    song.volume(1);
   }
 
-  toggleMute() {
-    this.muted = !this.muted;
+  function toggleMute() {
+    muted = !muted;
 
-    if (!this.song) {
+    if (!song) {
       return;
     }
 
-    if (this.muted) {
-      this.song.volume(0);
+    if (muted) {
+      song.volume(0);
     } else {
-      this.song.volume(1);
+      song.volume(1);
     }
   }
+
+  return {
+    playSong,
+    stopSong,
+    mute,
+    unmute,
+    toggleMute,
+  };
 }
 
-export default new MusicPlayer();
+export default createMusicPlayer();

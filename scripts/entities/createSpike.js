@@ -9,7 +9,8 @@ export default function () {
     body(),
     solid(),
     scale(0.5),
-    "spike",
+    "enemy",
     "moving",
+    { damage: 20 },
   ]);
 }

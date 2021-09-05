@@ -1,5 +1,7 @@
+const JUMP_FORCE = 500;
+
 export default function () {
-  const enemy = add([
+  const obj = add([
     sprite("goomba", {
       animSpeed: 0.3,
     }),
@@ -10,11 +12,19 @@ export default function () {
     scale(0.2),
     "enemy",
     "moving",
-    "jumping",
     {
       health: 30,
+      damage: 20,
     },
   ]);
 
-  enemy.play("walk");
+  obj.action(() => {
+    if (!obj.grounded()) {
+      return;
+    }
+
+    obj.jump(JUMP_FORCE);
+  });
+
+  obj.play("walk");
 }

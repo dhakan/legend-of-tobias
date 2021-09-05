@@ -81,4 +81,4 @@ k.scene("gameover", GameOver);
 
 await Promise.all(assets);
 
-k.go("game");
+k.go("title");
