@@ -1,3 +1,7 @@
+import k from "../kaboom.js";
+
+import { hp } from "../components.js";
+
 const JUMP_FORCE = 700;
 const DASH_SPEED = 300;
 
@@ -5,64 +9,64 @@ const SEQUENCE_NONE = 0;
 const SEQUENCE_JUMP = 1;
 const SEQUENCE_DASH = 2;
 
+const INITIAL_HEALTH = 300;
+
 export default function (player, initialHealth) {
   function spawnBoulder() {
-    const boulder = add([
-      rect(20, 20),
-      color(1, 1, 0),
-      pos(player.pos.x, 20),
-      body(),
-      origin("bot"),
-      "enemy",
+    const boulder = k.add([
+      k.rect(20, 20),
+      k.color(1, 1, 0),
+      k.pos(player.pos.x, 20),
+      k.body(),
+      k.origin("bot"),
+      "hazard",
     ]);
 
     boulder.action(() => {
       if (!boulder.grounded()) {
         return;
       }
-      destroy(boulder);
+      k.destroy(boulder);
     });
   }
 
   function handleCrashIntoWall() {
-    camShake(8);
+    k.camShake(8);
     spawnBoulder();
     obj.sequence = SEQUENCE_NONE;
     obj.direction = obj.direction === 1 ? -1 : 1;
   }
 
-  const obj = add([
-    sprite("boss", {
+  const obj = k.add([
+    k.sprite("boss", {
       animSpeed: 0.1,
     }),
-    pos(width() - 60, height() - 20 * 2),
-    body(),
-    solid(),
-    origin("bot"),
-    scale(0.6),
+    k.pos(k.width() - 60, k.height() - 20 * 2),
+    k.body(),
+    k.solid(),
+    k.origin("bot"),
+    k.scale(0.6),
+    hp(INITIAL_HEALTH),
     "enemy",
     "boss",
     {
-      health: initialHealth,
       jumping: false,
       sequence: SEQUENCE_NONE,
       direction: -1,
-      healthbar: add([
-        rect(initialHealth, 20),
-        pos(20 + 90, 50),
-        color(1, 0, 0),
-        layer("ui"),
-        "boss-ui",
-      ]),
     },
   ]);
 
-  const hpLabel = add([text("BOSS", 20), pos(20, 50), layer("ui"), "boss-ui"]);
+  const hpLabel = k.add([
+    k.text("BOSS", 20),
+    k.pos(20, 50),
+    k.layer("ui"),
+    "boss-ui",
+  ]);
 
   obj.action(async () => {
     if (obj.sequence === SEQUENCE_NONE) {
       obj.sequence = SEQUENCE_JUMP;
-      await wait(1);
+      await k.wait(1);
       obj.jump(JUMP_FORCE);
       obj.jumping = true;
     } else if (obj.sequence === SEQUENCE_DASH) {
@@ -74,7 +78,7 @@ export default function (player, initialHealth) {
       }
 
       // obj touches right wall
-      if (obj.pos.x + obj.width / 2 >= width()) {
+      if (obj.pos.x + obj.width / 2 >= k.width()) {
         handleCrashIntoWall();
       }
     }
@@ -93,9 +97,9 @@ export default function (player, initialHealth) {
 
     obj.jumping = false;
 
-    camShake(8);
+    k.camShake(8);
     spawnBoulder();
-    await wait(1);
+    await k.wait(1);
     obj.sequence = SEQUENCE_DASH;
   });
 

@@ -1,3 +1,5 @@
+import k from "./kaboom.js";
+
 function createMusicPlayer() {
   let song = null;
   let muted = null;
@@ -9,7 +11,7 @@ function createMusicPlayer() {
       song.stop();
     }
 
-    song = play(name);
+    song = k.play(name);
 
     if (!loop) {
       return;

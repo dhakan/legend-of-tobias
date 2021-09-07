@@ -1,18 +1,15 @@
+import k from "../kaboom.js";
+
 import musicPlayer from "../musicPlayer.js";
 
 export default function (score) {
-  add([text("Game Over", 16), pos(width() / 2, 120), origin("center")]);
+  k.add([k.text("Game Over", 16), k.pos(k.width() / 2, 120), k.origin("center")]);
 
-  add([text(score, 48), pos(width() / 2, 180), origin("center")]);
+  k.add([k.text(score, 48), k.pos(k.width() / 2, 180), k.origin("center")]);
 
   musicPlayer.stopSong();
 
-  keyPress("space", () => {
-    go("game");
-  });
-
-  //   Fix this
-  keyPress("m", () => {
-    musicPlayer.toggleMute();
+  k.keyPress("space", () => {
+    k.go("game");
   });
 }
