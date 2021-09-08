@@ -9,7 +9,7 @@ const SEQUENCE_NONE = 0;
 const SEQUENCE_JUMP = 1;
 const SEQUENCE_DASH = 2;
 
-const INITIAL_HEALTH = 100;
+const INITIAL_HEALTH = 200;
 
 export default function (player) {
   function spawnBoulder() {

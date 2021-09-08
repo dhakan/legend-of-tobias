@@ -1,6 +1,7 @@
 import k from "./kaboom.js";
 
 import Title from "./scenes/Title.js";
+import LevelOneIntro from "./scenes/LevelOneIntro.js";
 import Game from "./scenes/Game.js";
 import GameOver from "./scenes/GameOver.js";
 
@@ -78,6 +79,7 @@ k.layers(["game", "ui"], "game");
 k.scene("title", Title);
 k.scene("game", Game);
 k.scene("gameover", GameOver);
+k.scene("level_1_intro", LevelOneIntro);
 
 await Promise.all(assets);
 

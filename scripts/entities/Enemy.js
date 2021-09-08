@@ -2,10 +2,9 @@ import k from "../kaboom.js";
 
 import { hp, stickyHp } from "../components/index.js";
 
-const JUMP_FORCE = 500;
 const INITIAL_HEALTH = 30;
 
-export default function () {
+export default function (tags = []) {
   const obj = k.add([
     k.sprite("goomba", {
       animSpeed: 0.3,
@@ -19,16 +18,11 @@ export default function () {
     stickyHp(),
     "enemy",
     "moving",
+    ...tags,
     {
       damage: 20,
     },
   ]);
-
-  // obj.action(() => {
-  //   if (obj.grounded()) {
-  //     obj.jump(JUMP_FORCE);
-  //   }
-  // });
 
   obj.on("death", () => {
     k.destroy(obj);

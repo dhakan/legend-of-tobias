@@ -18,6 +18,8 @@ import createCollisionHandler from "../createCollisionHandler.js";
 const LEVEL_SPEED = 100;
 const PROJECTILE_SPEED = 300;
 
+const ENEMY_JUMP_FORCE = 500;
+
 export default function () {
   musicPlayer.playSong("theme_level_1");
 
@@ -39,18 +41,61 @@ export default function () {
   createBasePlatform();
 
   // Wave 1
-  // k.loop(5, async () => {
-  //   createEnemy();
-  //   await k.wait(1);
-  //   createSpike();
-  //   await k.wait(1);
-  //   createHealth();
-  // });
+  k.wait(2, async () => {
+    createEnemy();
+    await k.wait(2);
+    createEnemy();
+    await k.wait(2);
+    createEnemy();
+    await k.wait(2);
+    createEnemy();
+    await k.wait(2);
+    createEnemy();
 
-  createBoss(player);
+    await k.wait(3);
 
-  k.action("moving", (moving) => {
-    moving.move(-LEVEL_SPEED, 0);
+    createEnemy(["jumping"]);
+    await k.wait(2);
+    createEnemy(["jumping"]);
+    await k.wait(2);
+    createEnemy(["jumping"]);
+    await k.wait(2);
+    createEnemy(["jumping"]);
+    await k.wait(2);
+    createEnemy(["jumping"]);
+
+    await k.wait(2);
+
+    const bossText = k.add([
+      k.text("BOSS 1 - CARMELITAS", 20),
+      k.pos(k.width(), k.height() / 2),
+      k.origin("left"),
+    ]);
+
+    bossText.action(async () => {
+      if (bossText.pos.x + bossText.width / 2 > k.width() / 2) {
+        bossText.move(-250, 0);
+        return;
+      }
+
+      await k.wait(2);
+      k.destroy(bossText);
+    });
+
+    bossText.on("destroy", () => {
+      createBoss(player);
+    });
+  });
+
+  k.action("moving", (obj) => {
+    obj.move(-LEVEL_SPEED, 0);
+  });
+
+  k.action("jumping", (obj) => {
+    if (!obj.grounded()) {
+      return;
+    }
+    obj.jump(ENEMY_JUMP_FORCE);
   });
 
   k.action("projectile", (projectile) => {
