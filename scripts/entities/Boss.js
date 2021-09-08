@@ -1,6 +1,6 @@
 import k from "../kaboom.js";
 
-import { hp } from "../components.js";
+import { hp, stickyHp } from "../components/index.js";
 
 const JUMP_FORCE = 700;
 const DASH_SPEED = 300;
@@ -9,9 +9,9 @@ const SEQUENCE_NONE = 0;
 const SEQUENCE_JUMP = 1;
 const SEQUENCE_DASH = 2;
 
-const INITIAL_HEALTH = 300;
+const INITIAL_HEALTH = 100;
 
-export default function (player, initialHealth) {
+export default function (player) {
   function spawnBoulder() {
     const boulder = k.add([
       k.rect(20, 20),
@@ -20,6 +20,9 @@ export default function (player, initialHealth) {
       k.body(),
       k.origin("bot"),
       "hazard",
+      {
+        damage: 20,
+      },
     ]);
 
     boulder.action(() => {
@@ -47,20 +50,14 @@ export default function (player, initialHealth) {
     k.origin("bot"),
     k.scale(0.6),
     hp(INITIAL_HEALTH),
+    stickyHp(),
     "enemy",
-    "boss",
     {
       jumping: false,
       sequence: SEQUENCE_NONE,
       direction: -1,
+      damage: 20,
     },
-  ]);
-
-  const hpLabel = k.add([
-    k.text("BOSS", 20),
-    k.pos(20, 50),
-    k.layer("ui"),
-    "boss-ui",
   ]);
 
   obj.action(async () => {
@@ -103,10 +100,9 @@ export default function (player, initialHealth) {
     obj.sequence = SEQUENCE_DASH;
   });
 
-  obj.play("idle");
+  obj.on("death", () => {
+    k.destroy(obj);
+  });
 
-  return {
-    initialHealth,
-    hpLabel,
-  };
+  obj.play("idle");
 }

@@ -1,8 +1,9 @@
 import k from "../kaboom.js";
 
-import { hp } from "../components.js";
+import { hp, stickyHp } from "../components/index.js";
 
 const JUMP_FORCE = 500;
+const INITIAL_HEALTH = 30;
 
 export default function () {
   const obj = k.add([
@@ -14,7 +15,8 @@ export default function () {
     k.solid(),
     k.origin("bot"),
     k.scale(0.2),
-    hp(30),
+    hp(INITIAL_HEALTH),
+    stickyHp(),
     "enemy",
     "moving",
     {
@@ -22,15 +24,17 @@ export default function () {
     },
   ]);
 
-  obj.action(() => {
-    if (obj.isDead()) {
-      k.destroy(obj);
-    }
+  // obj.action(() => {
+  //   if (obj.grounded()) {
+  //     obj.jump(JUMP_FORCE);
+  //   }
+  // });
 
-    if (obj.grounded()) {
-      obj.jump(JUMP_FORCE);
-    }
+  obj.on("death", () => {
+    k.destroy(obj);
   });
 
   obj.play("walk");
+
+  return obj;
 }

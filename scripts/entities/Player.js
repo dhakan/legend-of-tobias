@@ -1,6 +1,6 @@
 import k from "../kaboom.js";
 
-import { hp } from "../components.js";
+import { hp } from "../components/index.js";
 
 const PLAYER_SPEED = 200;
 const JUMP_FORCE = 600;
@@ -20,6 +20,15 @@ export default function () {
     { score: 0 },
   ]);
 
+  const uiLabel = k.add([k.text("HP", 20), k.pos(20), k.layer("ui")]);
+
+  const ui = k.add([
+    k.rect(obj.getHealth(), 20),
+    k.pos(20 + 50, 20),
+    k.color(1, 0, 0),
+    k.layer("ui"),
+  ]);
+
   obj.action(() => {
     if (obj.pos.x - obj.width / 2 <= 0) {
       obj.pos.x = 0 + obj.width / 2;
@@ -33,9 +42,20 @@ export default function () {
       k.go("gameover", obj.score);
     }
 
-    if (obj.isDead()) {
-      k.go("gameover", 0);
-    }
+    ui.width = obj.getHealth();
+  });
+
+  obj.on("health", () => {
+    // play("collected");
+  });
+
+  obj.on("hurt", () => {
+    // k.play("hurt");
+  });
+
+  obj.on("death", () => {
+    k.go("gameover", 0);
+    // k.destroy(obj);
   });
 
   obj.on("grounded", () => {
@@ -96,6 +116,11 @@ export default function () {
       obj.scale.x = 1;
       obj.play("idle");
     }
+  });
+
+  obj.on("destroy", () => {
+    k.destroy(ui);
+    k.destroy(uiLabel);
   });
 
   obj.play("idle");

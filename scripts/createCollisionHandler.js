@@ -18,7 +18,6 @@ export default function (player) {
 
   player.collides("hazard", (obj) => {
     player.loseHealth(obj.damage);
-    // play("hurt");
     k.camShake(12);
   });
 

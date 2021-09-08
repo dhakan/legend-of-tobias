@@ -39,14 +39,15 @@ export default function () {
   createBasePlatform();
 
   // Wave 1
-  k.loop(5, async () => {
-    createEnemy();
-    await k.wait(1);
-    createSpike();
-    await k.wait(1);
-    createHealth();
-    // createBoss(player, 300);
-  });
+  // k.loop(5, async () => {
+  //   createEnemy();
+  //   await k.wait(1);
+  //   createSpike();
+  //   await k.wait(1);
+  //   createHealth();
+  // });
+
+  createBoss(player);
 
   k.action("moving", (moving) => {
     moving.move(-LEVEL_SPEED, 0);

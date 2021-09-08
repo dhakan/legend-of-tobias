@@ -1,6 +1,6 @@
 import k from "../kaboom.js";
 
-import { lifespan, grow } from "../components.js";
+import { lifespan, grow } from "../components/index.js";
 
 // Borrowed solution from kaboomjs.com
 export default function (p, n, rad, size) {
