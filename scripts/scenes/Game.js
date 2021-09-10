@@ -14,6 +14,7 @@ import {
 
 // Handlers
 import createCollisionHandler from "../createCollisionHandler.js";
+import GameOver from "./GameOver.js";
 
 const LEVEL_SPEED = 100;
 const PROJECTILE_SPEED = 300;
@@ -41,7 +42,7 @@ export default function () {
   createBasePlatform();
 
   // Wave 1
-  k.wait(2, async () => {
+  k.wait(1, async () => {
     createEnemy();
     await k.wait(2);
     createEnemy();
@@ -66,25 +67,35 @@ export default function () {
 
     await k.wait(2);
 
-    const bossText = k.add([
-      k.text("BOSS 1 - CARMELITAS", 20),
-      k.pos(k.width(), k.height() / 2),
-      k.origin("left"),
-    ]);
+    const boss = createBoss(player);
 
-    bossText.action(async () => {
-      if (bossText.pos.x + bossText.width / 2 > k.width() / 2) {
-        bossText.move(-250, 0);
-        return;
-      }
-
-      await k.wait(2);
-      k.destroy(bossText);
+    boss.on("destroy", () => {
+      k.go("level_1_intro");
     });
 
-    bossText.on("destroy", () => {
-      createBoss(player);
-    });
+    // const bossText = k.add([
+    //   k.text("BOSS 1 - CARMELITAS", 20),
+    //   k.pos(k.width(), k.height() / 2),
+    //   k.origin("left"),
+    // ]);
+
+    // bossText.action(async () => {
+    //   if (bossText.pos.x + bossText.width / 2 > k.width() / 2) {
+    //     bossText.move(-250, 0);
+    //     return;
+    //   }
+
+    //   await k.wait(2);
+    //   k.destroy(bossText);
+    // });
+
+    // bossText.on("destroy", () => {
+    //   const boss = createBoss(player);
+
+    //   boss.on("destroy", () => {
+    //     k.go("level_1_intro");
+    //   });
+    // });
   });
 
   k.action("moving", (obj) => {

@@ -1,6 +1,6 @@
 import k from "../kaboom.js";
 
-import { hp, stickyHp } from "../components/index.js";
+import { hp, stickyHp, introText } from "../components/index.js";
 
 const JUMP_FORCE = 700;
 const DASH_SPEED = 300;
@@ -12,33 +12,7 @@ const SEQUENCE_DASH = 2;
 const INITIAL_HEALTH = 200;
 
 export default function (player) {
-  function spawnBoulder() {
-    const boulder = k.add([
-      k.rect(20, 20),
-      k.color(1, 1, 0),
-      k.pos(player.pos.x, 20),
-      k.body(),
-      k.origin("bot"),
-      "hazard",
-      {
-        damage: 20,
-      },
-    ]);
-
-    boulder.action(() => {
-      if (!boulder.grounded()) {
-        return;
-      }
-      k.destroy(boulder);
-    });
-  }
-
-  function handleCrashIntoWall() {
-    k.camShake(8);
-    spawnBoulder();
-    obj.sequence = SEQUENCE_NONE;
-    obj.direction = obj.direction === 1 ? -1 : 1;
-  }
+  let introRunning = true;
 
   const obj = k.add([
     k.sprite("boss", {
@@ -51,6 +25,7 @@ export default function (player) {
     k.scale(0.6),
     hp(INITIAL_HEALTH),
     stickyHp(),
+    introText("BOSS 1 - CARMELITAS", 3),
     "enemy",
     {
       jumping: false,
@@ -61,6 +36,10 @@ export default function (player) {
   ]);
 
   obj.action(async () => {
+    if (introRunning) {
+      return;
+    }
+
     if (obj.sequence === SEQUENCE_NONE) {
       obj.sequence = SEQUENCE_JUMP;
       await k.wait(1);
@@ -105,4 +84,44 @@ export default function (player) {
   });
 
   obj.play("idle");
+
+  function spawnBoulder() {
+    const boulder = k.add([
+      k.rect(20, 20),
+      k.color(1, 1, 0),
+      k.pos(player.pos.x, 20),
+      k.body(),
+      k.origin("bot"),
+      "hazard",
+      {
+        damage: 20,
+      },
+    ]);
+
+    boulder.action(() => {
+      if (!boulder.grounded()) {
+        return;
+      }
+      k.destroy(boulder);
+    });
+  }
+
+  function handleCrashIntoWall() {
+    k.camShake(8);
+    spawnBoulder();
+    obj.sequence = SEQUENCE_NONE;
+    obj.direction = -obj.direction;
+    // We cannot use obj.direction, as the sprite flipping is opposite from the direction
+    // (going left means the direction is negative but sprite is normal)
+    obj.scale.x = -obj.scale.x;
+  }
+
+  obj.hidden = true;
+
+  obj.on("intro-complete", () => {
+    obj.hidden = false;
+    introRunning = false;
+  });
+
+  return obj;
 }

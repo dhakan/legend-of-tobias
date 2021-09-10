@@ -5,3 +5,4 @@ export { default as createHealth } from "./Health.js";
 export { default as createPlayer } from "./Player.js";
 export { default as createSpike } from "./Spike.js";
 export { default as createEnemy } from "./Enemy.js";
+export { default as createShadowText } from "./ShadowText.js";

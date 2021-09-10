@@ -5,6 +5,7 @@ import { hp } from "../components/index.js";
 const PLAYER_SPEED = 200;
 const JUMP_FORCE = 600;
 const INITIAL_HEALTH = 100;
+const UI_MAX_WIDTH = 80;
 
 export default function () {
   const obj = k.add([
@@ -20,11 +21,11 @@ export default function () {
     { score: 0 },
   ]);
 
-  const uiLabel = k.add([k.text("HP", 20), k.pos(20), k.layer("ui")]);
+  const uiLabel = k.add([k.text("HP", 14), k.pos(20), k.layer("ui")]);
 
   const ui = k.add([
-    k.rect(obj.getHealth(), 20),
-    k.pos(20 + 50, 20),
+    k.rect(UI_MAX_WIDTH, 8),
+    k.pos(20 + 35, 20),
     k.color(1, 0, 0),
     k.layer("ui"),
   ]);
@@ -42,10 +43,12 @@ export default function () {
       k.go("gameover", obj.score);
     }
 
-    ui.width = obj.getHealth();
+    const percentage = obj.getHealth() / obj.getInitialHealth();
+    ui.width = percentage * UI_MAX_WIDTH;
   });
 
   obj.on("health", () => {
+    updateUi();
     // play("collected");
   });
 
