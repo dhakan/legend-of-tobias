@@ -2,6 +2,7 @@ export default function (initialHealth) {
   let health = initialHealth;
 
   return {
+    id: "hp",
     _setHealth(value) {
       health = value;
     },

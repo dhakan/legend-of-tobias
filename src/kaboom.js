@@ -1,3 +1,5 @@
+// import kaboom from "https://unpkg.com/kaboom@next/dist/kaboom.mjs";
+
 export default kaboom({
   noGlobal: true,
   scale: 2,
